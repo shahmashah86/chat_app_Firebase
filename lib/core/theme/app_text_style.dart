@@ -30,17 +30,35 @@ class AppTextStyle {
   }
 
 
- //homescreen kanuna message blue if not read
+ //homescreen kanuna message blue if not read nd read
  
-      static TextStyle scrreenmsgTextStyle(
+      static TextStyle unreadMsgTextStyle(
     BuildContext context, {
     Color? fontColor,
     double? fontSize,
     FontWeight? fontWeight,
+    TextOverflow? overflow
+    
+  }) {
+  return  TextStyle(color: fontColor??AppColors.primaryColor,
+    fontSize: 15.sp,
+    fontWeight: fontWeight??FontWeight.normal,
+    overflow: TextOverflow.ellipsis
+    );
+  }
+   
+      static TextStyle readMsgTextStyle(
+    BuildContext context, {
+    Color? fontColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    TextOverflow? overflow
+    
   }) {
   return  TextStyle(color: fontColor??AppColors.chatgrey,
     fontSize: 15.sp,
     fontWeight: fontWeight??FontWeight.normal,
+       overflow: TextOverflow.ellipsis
     );
   }
 }

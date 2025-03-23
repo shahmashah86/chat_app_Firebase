@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sizer/sizer.dart';
+import 'package:telegram_clone/core/theme/app_colors.dart';
 import 'package:telegram_clone/package/Firebase/firebase_auth_services.dart';
 
 
@@ -117,8 +119,8 @@ Future<void> getImage() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 84, 62, 248) ,
+      appBar: AppBar(iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor:AppColors.primaryColor ,
         
       ),
       body: ListView(
@@ -128,14 +130,14 @@ Future<void> getImage() async {
            await getImage();
           },
             child: CircleAvatar(
-              radius: 55,
+              radius: 14.5.w,
               child: ValueListenableBuilder<File?>(
                 valueListenable: selectedImage,
                 builder: (context, value, child) {
                   return value == null
                       ? Icon(
                           Icons.camera_alt,
-                          size: 30,
+                          size: 12.w,
                         )
                       : Image.file(
                           value,
@@ -146,7 +148,7 @@ Future<void> getImage() async {
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 2.2.h,
           ),
           TextFormField(controller: nameController,
             decoration: InputDecoration(
@@ -155,7 +157,7 @@ Future<void> getImage() async {
                 hintStyle: TextStyle(color: Colors.black54)),
           ),
           SizedBox(
-            height: 30,
+            height: 3.3.h,
           ),
           TextFormField(controller: phoneNumberController,
             decoration: InputDecoration(
@@ -164,7 +166,7 @@ Future<void> getImage() async {
                 hintStyle: TextStyle(color: Colors.black54)),
           ),
           SizedBox(
-            height: 30,
+            height: 3.3.h,
           ),
           TextFormField(controller: bioController,
             decoration: InputDecoration(
@@ -173,7 +175,7 @@ Future<void> getImage() async {
                 hintStyle: TextStyle(color: Colors.black54)),
           ),
            SizedBox(
-            height: 20,
+            height: 3.h,
           ),
           TextButton(onPressed: (){
             final user = {
@@ -184,7 +186,7 @@ Future<void> getImage() async {
 
         _saveUserData(user);
             
-          }, child: Text("Save",style: TextStyle(fontSize: 20),))
+          }, child: Text("Save",style: TextStyle(fontSize: 19.sp),))
         ],
       ),
     );

@@ -3,7 +3,7 @@
 
 
 import 'dart:developer';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,23 +29,23 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   void initState() {
-    FirebaseAuth.instance
-  .authStateChanges()
-  .listen((User? user) {
-    if (user == null) {
-      log('User is currently signed out!');
-    return;
-    } else {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-        return Tabbar();
-      }), (route) => false);
-      // Navigator.push( context, MaterialPageRoute(builder: (context){
-      //   return Tabbar();
-      // }));
-      log('User is signed in! $user');
-    }
-  });
-    super.initState();
+  //   FirebaseAuth.instance
+  // .authStateChanges()
+  // .listen((User? user) {
+  //   if (user == null) {
+  //     log('User is currently signed out!');
+  //   return;
+  //   } else {
+  //     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+  //       return Tabbar();
+  //     }), (route) => false);
+  //     // Navigator.push( context, MaterialPageRoute(builder: (context){
+  //     //   return Tabbar();
+  //     // }));
+  //     log('User is signed in! $user');
+  //   }
+  // });
+  //   super.initState();
   }
    @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                           topRight: Radius.circular(20),
                           bottomRight: Radius.circular(20)),
                       color: Colors.white),
-                  height: 70,
+                  height: 8.h,
                   width: MediaQuery.sizeOf(context).width * 0.56,
                 ),
                 Padding(
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),
                     color: const Color.fromARGB(255, 255, 236, 230)),
-                height: 70,
+                height: 8.h,
                 width: MediaQuery.sizeOf(context).width * 0.65,
                 child: Row(
                   spacing: 15,
@@ -249,6 +249,7 @@ class _LoginState extends State<Login> {
                   )),
             )
           ]),
+         
              
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.02,
@@ -260,45 +261,109 @@ class _LoginState extends State<Login> {
                 fontSize: 40, color: Colors.white, fontStyle: FontStyle.italic),
           ),
           SizedBox(height: MediaQuery.sizeOf(context).height * 0.14),
-          SizedBox(height: 6.h,child: 
-          SignInButton(
-                            Buttons.google,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(color: Colors.black12),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            onPressed: ()async {
-                              context.read<AuthenticationBloc>().add(AuthenticationByGoogle());
-                              BlocBuilder<AuthenticationBloc, AuthenticationState>(
-                                builder: (context, state) {
-                                  if(state is AuthenticationAuthenticated){
+           BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, state) {
+        if (state is AuthenticationAuthenticated) {
+          if (state.userCredential.additionalUserInfo?.isNewUser == true) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileSetupScreen()),
+              (route) => false,
+            );
+          } else {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Tabbar()),
+              (route) => false,
+            );
+          }
+        }
+
+        if (state is AuthenticationFailed) {
+          // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      state.message,
+      style: TextStyle(color: Colors.white), // White text for contrast
+    ),
+    backgroundColor: Colors.indigo.shade700, // Darker blue for better visibility
+    duration: Duration(seconds: 3),
+    behavior: SnackBarBehavior.floating, // Makes it look more modern
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10), // Soft edges for a better look
+    ),
+  ),
+);
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthenticationLoading) {
+          // Show Circular Progress Indicator instead of button
+          return Center(
+            child: SpinKitWanderingCubes(color: Colors.white,)
+          );
+        }
+
+        return SizedBox(
+          height: 6.h,
+          child: SignInButton(
+            Buttons.google,
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.black12),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Tabbar()),
+              (route) => false,
+            );
+              // context.read<AuthenticationBloc>().add(AuthenticationByGoogle());
+            },
+          ),
+        );
+      },
+    )
+          // SizedBox(height: 6.h,child: 
+          // SignInButton(
+          //                   Buttons.google,
+          //                   shape: RoundedRectangleBorder(
+          //                     side: const BorderSide(color: Colors.black12),
+          //                     borderRadius: BorderRadius.circular(8),
+          //                   ),
+          //                   onPressed: ()async {
+          //                     context.read<AuthenticationBloc>().add(AuthenticationByGoogle());
+          //                     BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          //                       builder: (context, state) {
+          //                         if(state is AuthenticationAuthenticated){
 
                                   
-                                  state.userCredential.additionalUserInfo?.isNewUser == true ?
+          //                         state.userCredential.additionalUserInfo?.isNewUser == true ?
                       
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                return ProfileSetupScreen();
-                              }), (route) => false)
-                                  :Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                return Tabbar();
-                              }), (route) => false);
+          //                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+          //                       return ProfileSetupScreen();
+          //                     }), (route) => false)
+          //                         :Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+          //                       return Tabbar();
+          //                     }), (route) => false);
                               
-                             log(state.userCredential.toString());
-                                  }
-                                  if(state is AuthenticationFailed){
-                                    log(state.message);
-                                  }
-                                 return Text("Please wait");
-                                  // TODO: implement listener
-                                },
+          //                    log(state.userCredential.toString());
+          //                         }
+          //                         if(state is AuthenticationFailed){
+          //                           log(state.message);
+          //                         }
+          //                        return Text("Please wait");
+          //                         // TODO: implement listener
+          //                       },
                                 
-                              );
+          //                     );
                              
          
                               
-                            },
-                          ),
-               ),
+          //                   },
+          //                 ),
+          //      ),
           
         ]),
       ),

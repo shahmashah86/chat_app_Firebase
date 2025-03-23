@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import 'package:telegram_clone/core/theme/app_colors.dart';
 
 class Status extends StatelessWidget {
   const Status({super.key});
@@ -14,13 +16,13 @@ class Status extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 8, bottom: 3, top: 3),
             child: Container(
-              child: Row(spacing: 20,
+              child: Row(spacing: 3.5.w,
                 children: [
                   CircleAvatar(
-                      radius: 39,
-                      backgroundColor: const Color.fromARGB(255, 84, 62, 248),
+                      radius: 8.6.w,
+                      backgroundColor: AppColors.primaryColor,
                       child: CircleAvatar(
-                        radius: 37,
+                        radius: 8.w,
                       )),
                       Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

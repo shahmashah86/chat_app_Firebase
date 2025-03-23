@@ -68,8 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildArchivedTile() {
     return ListTile(
       leading:
-          CircleAvatar(radius: 27,
-            child: Icon(Icons.archive, color:  const Color.fromARGB(255, 84, 62, 248))),
+          CircleAvatar(radius: 7.w,
+            child: Icon(Icons.archive, color:AppColors.primaryColor)),
       title: Text("Archived Chats"),
       onTap: () {
         Navigator.push(
@@ -85,8 +85,8 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       },
       trailing: Container(
-        height: 20,
-        width: 20,
+        height: 2.3.h,
+        width: 4.5.w,
         decoration: BoxDecoration(
             color: Colors.black26,
             borderRadius: BorderRadius.only(
@@ -115,10 +115,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   return ChatDetailScreen();
                 })));
             },
-            leading: CircleAvatar(radius: 27),
+            leading: CircleAvatar(radius: 7.w),
             title: Text(
               chat["name"],
-              style: AppTextStyle.scrreenmsgTextStyle(context,
+              style: AppTextStyle.readMsgTextStyle(context,
                   fontSize: 21.sp,
                   fontColor: AppColors.maintext,
                   fontWeight: FontWeight.w500),
@@ -126,8 +126,8 @@ class _ChatScreenState extends State<ChatScreen> {
             subtitle: chat["unread"] > 0
                 ? Text(
                     chat["message"],
-                    style: AppTextStyle.scrreenmsgTextStyle(context,
-                        fontColor: const Color.fromARGB(255, 84, 62, 248)),
+                    style: AppTextStyle.unreadMsgTextStyle(context,
+   ),
                     // TextStyle(
                     //   color: chat["unread"] > 0 ? Colors.blue : Colors.black87,
                     //   fontWeight: chat["unread"] > 0 ? FontWeight.bold : FontWeight.normal,
@@ -135,16 +135,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     overflow: TextOverflow.ellipsis,
                   )
                 : Row(
-                    spacing: 3,
+                    spacing: 1.5.w,
                     children: [
                       Icon(
                         Icons.done_all,
-                        color: const Color.fromARGB(255, 84, 62, 248),
-                        size: 20,
+                        color: AppColors.primaryColor,
+                        size:5.w,
                       ),
                       Text(
                         chat["message"],
-                        style: AppTextStyle.scrreenmsgTextStyle(context,
+                        style: AppTextStyle.readMsgTextStyle(context,
                             fontColor: AppColors.chatgrey),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -156,15 +156,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 chat['unread'] > 0 ? SizedBox.shrink() : Text('7:30 PM'),
                 if (chat["unread"] > 0)
                   Container(
-                    margin: EdgeInsets.only(top: 5),
+                    // margin: EdgeInsets.only(top: 5),
                     padding: EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 84, 62, 248),
+                      color: AppColors.primaryColor,
                       shape: BoxShape.circle,
                     ),
                     child: Text(
                       chat["unread"].toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: TextStyle(color: Colors.white, fontSize: 13.sp),
                     ),
                   ),
               ],
@@ -181,8 +181,8 @@ class _ChatScreenState extends State<ChatScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color.fromARGB(255, 84, 62, 248),
-            Colors.black12,
+            AppColors.primaryColor,
+            AppColors.chatgrey,
             
           ],
           begin: Alignment.centerLeft,
@@ -205,7 +205,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(backgroundColor: AppColors.primaryColor,
         content: Text("Chat archived"),
         action: SnackBarAction(
           label: "Undo",
@@ -242,14 +242,14 @@ class ArchivedChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Archived Chats",style: TextStyle(color: Colors.white),),
-        backgroundColor: const Color.fromARGB(255, 84, 62, 248),
+        backgroundColor: AppColors.primaryColor,
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: archived.isEmpty
           ? Center(
               child: Text(
                 "No archived chats",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 14.sp, color: AppColors.chatgrey),
               ),
             )
           : ListView.builder(
@@ -265,31 +265,34 @@ class ArchivedChatScreen extends StatelessWidget {
                         _unarchiveChat(context, index);
                       },
                       child: ListTile(
-                        leading: CircleAvatar(radius: 27),
+                        leading: CircleAvatar(radius: 7.w),
                         title: Text(
                           archived[index]["name"],
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style:  AppTextStyle.readMsgTextStyle(context,
+                  fontSize: 21.sp,
+                  fontColor: AppColors.maintext,
+                  fontWeight: FontWeight.w500),
+            
                         ),
                         subtitle: Text(
                           archived[index]["message"],
-                          style: AppTextStyle.scrreenmsgTextStyle(context,
-                              fontColor: archived[index]["unread"] > 0
-                                  ? const Color.fromARGB(255, 84, 62, 248)
-                                  : Colors.black54),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                          style: archived[index]["unread"] > 0?
+                           AppTextStyle.unreadMsgTextStyle(context):AppTextStyle.readMsgTextStyle(context)),
+                             
+                                  
+
+        
                         trailing: archived[index]["unread"] > 0
                             ? Container(
                                 padding: EdgeInsets.all(6),
                                 decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 84, 62, 248),
+                                  color: AppColors.primaryColor,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Text(
                                   archived[index]["unread"].toString(),
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                      color: Colors.white, fontSize: 13.sp),
                                 ),
                               )
                             : null,
@@ -307,7 +310,7 @@ class ArchivedChatScreen extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [const Color.fromARGB(255, 84, 62, 248),Colors.black12,],
+          colors: [AppColors.primaryColor,AppColors.chatgrey,],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -330,7 +333,7 @@ class ArchivedChatScreen extends StatelessWidget {
     // Return chat to main screen
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(backgroundColor: AppColors.primaryColor,
         content: Text("Chat unarchived"),
         action: SnackBarAction(
           label: "Undo",

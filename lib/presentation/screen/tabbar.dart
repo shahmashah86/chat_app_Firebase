@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import 'package:telegram_clone/core/theme/app_colors.dart';
 import 'package:telegram_clone/presentation/screen/chat_screen.dart';
 import 'package:telegram_clone/presentation/screen/contacts.dart';
+import 'package:telegram_clone/presentation/screen/profile_setup_screen.dart';
+import 'package:telegram_clone/presentation/screen/settings.dart';
 import 'package:telegram_clone/presentation/screen/status.dart';
 
 
@@ -47,10 +51,31 @@ late final List<Widget> _body ;
     builder: (context, value, child) {
       return value ? Icon(Icons.push_pin_outlined) : SizedBox.shrink();
     },
-  ),SizedBox(width: 5,),
-  Icon(Icons.search),Icon(Icons.more_vert),
+  ),SizedBox(width: 5.w,),
+  IconButton(
+    onPressed: () {
+    
+  },
+  icon: Icon(Icons.search)),
+  // IconButton(onPressed: (){
+    PopupMenuButton(itemBuilder:(BuildContext context){
+        return <PopupMenuEntry<String>>[
+                                    PopupMenuItem<String>(
+                                      onTap: () => Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return Settings();
+                  
+                                      })),
+                                      value: "Option1",
+                                      child: Text("Settings"),
+                                    ),
+                                   
+                                  ];
+    } )
 
-SizedBox(width: 5,)
+  // }, icon: Icon(Icons.more_vert)),
+
+// SizedBox(width: 5,)
 
         ],
       ),
@@ -70,7 +95,7 @@ SizedBox(width: 5,)
                     indicatorSize:TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
                   indicator: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                  color: const Color.fromARGB(255, 84, 62, 248),
+                  color:AppColors.primaryColor
                   ),
                   // padding: EdgeInsets.all(4),
                     controller: _tabController,

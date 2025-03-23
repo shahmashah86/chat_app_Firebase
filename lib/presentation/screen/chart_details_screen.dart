@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+import 'package:telegram_clone/core/theme/app_colors.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key});
@@ -54,20 +56,21 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
       },
     ];
     return Scaffold(
-      appBar: AppBar(iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor:const Color.fromARGB(255, 84, 62, 248) ,
-        toolbarHeight: 65,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor:AppColors.primaryColor,
+        toolbarHeight: 6.h,
         titleSpacing: 0,
         title: ListTile(
           leading: CircleAvatar(
-            radius: 30,
+            radius: 5.5.w,
           ),
           title: Text(
             messages[0]['sender'],
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontSize: 17.sp),
           ),
           subtitle: Text('last seen recently',
-              style: TextStyle(color: Colors.white54)),
+              style: TextStyle(color: AppColors.chatgrey)),
         ),
         actions: [
           IconButton(
@@ -110,14 +113,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                   padding: EdgeInsets.only(
                                       left: 10, right: 10, bottom: 8, top: 8),
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppColors.chatgrey.withOpacity(.4),
                                       borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(13),
                                       topLeft: Radius.circular(13),
                                       topRight: Radius.circular(13))
                                         ),
                                   child: Row(
-                                    spacing: 10,
+                                    spacing: 2.5.w,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
@@ -139,14 +142,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                               padding: EdgeInsets.only(
                                   left: 10, right: 10, bottom: 8, top: 8),
                               decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 84, 62, 248),
+                                  color: AppColors.primaryColor,
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(20),
                                           topLeft: Radius.circular(20),
                                           topRight: Radius.circular(20))
                                   ),
                               child: Row(
-                                spacing: 10,
+                                spacing: 2.5.w,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -180,7 +183,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                       contentPadding: EdgeInsets.all(13),
                       suffixIcon: _isTextEntered.value?IconButton(onPressed: (){
           
-                      }, icon: Icon(Icons.send,color: const Color.fromARGB(255, 84, 62, 248))):
+                      }, icon: Icon(Icons.send,color: AppColors.primaryColor)):
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

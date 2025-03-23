@@ -12,13 +12,14 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       final AuthenticationRepo authenticationRepo;
-  AuthenticationBloc(this.authenticationRepo) : super(AuthenticationLoading()) {
+  AuthenticationBloc(this.authenticationRepo) : super(AuthenticationInitial()) {
 
    on<AuthenticationByGoogle>(_signinWithGoogle);
   }
 
-  FutureOr<void> _signinWithGoogle(AuthenticationByGoogle event, Emitter<AuthenticationState> emit)  async{
+  Future<void> _signinWithGoogle(AuthenticationByGoogle event, Emitter<AuthenticationState> emit)  async{
     try{
+      emit(AuthenticationLoading());
      final response=await authenticationRepo.signInWithGoogle() ;
 
       emit(AuthenticationAuthenticated(userCredential: response)); 
