@@ -1,0 +1,2 @@
+C:/FLUTTER/Telegram/telegram_clone/android/app/.cxx/RelWithDebInfo/5d6d5i1p/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/FLUTTER/Telegram/telegram_clone/android/app/.cxx/RelWithDebInfo/5d6d5i1p/armeabi-v7a/CMakeFiles/rebuild_cache.dir

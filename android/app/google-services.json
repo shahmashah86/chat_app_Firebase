@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "141722026711",
+    "project_id": "chat-app-54b94",
+    "storage_bucket": "chat-app-54b94.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141722026711:android:940947df019d83691d6692",
+        "android_client_info": {
+          "package_name": "com.example.telegram_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXJhr6C5HHli9vlw9-lLi69cmHDL_X7uM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
