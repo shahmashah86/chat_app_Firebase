@@ -15,6 +15,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   AuthenticationBloc(this.authenticationRepo) : super(AuthenticationInitial()) {
 
    on<AuthenticationByGoogle>(_signinWithGoogle);
+   on<AuthernticationSignOut>(_signOut);
   }
 
   Future<void> _signinWithGoogle(AuthenticationByGoogle event, Emitter<AuthenticationState> emit)  async{
@@ -24,6 +25,16 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
       emit(AuthenticationAuthenticated(userCredential: response)); 
 
+    }
+    catch(e){
+      emit(AuthenticationFailed(e.toString()));
+    }
+  }
+  Future<void> _signOut(AuthernticationSignOut event, Emitter<AuthenticationState> emit) async{
+    try{
+      emit(AuthenticationLoading());
+      await authenticationRepo.signOut();
+      emit(AuthenticationAuthenticated(userCredential: null)); 
     }
     catch(e){
       emit(AuthenticationFailed(e.toString()));

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:telegram_clone/core/theme/app_colors.dart';
+import 'package:telegram_clone/presentation/bloc/authentication/authentication_bloc.dart';
 import 'package:telegram_clone/presentation/screen/profile_setup_screen.dart';
+import 'package:telegram_clone/presentation/screen/signin.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -64,11 +67,20 @@ class Settings extends StatelessWidget {
                 child: Row(spacing: 10,
                         children: [Icon(Icons.help_outline),Text("Features")],),
               ),
-                Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(spacing: 10,
-                        children: [Icon(Icons.logout),Text("Features")],),
-              ),
+                InkWell(onTap: (){
+                  // signout
+                  context.read<AuthenticationBloc>().add(AuthernticationSignOut());
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                    return Login();
+                  }),(route)=>false);
+
+                },
+                  child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(spacing: 10,
+                          children: [Icon(Icons.logout),Text("Signout")],),
+                                ),
+                ),
 
               ],),
     );

@@ -33,4 +33,15 @@ class FirebaseAuthService {
       rethrow;  
     }
   }
+
+  //sing out
+  Future signOut() async{
+    try{
+      return await _auth.signOut();
+    }
+    catch(e){
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

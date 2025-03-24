@@ -10,4 +10,9 @@ class AuthenticationRepoImpl implements AuthenticationRepo{
    
 
   }
+  
+  @override
+  Future<void> signOut() async{
+return await FirebaseAuthService().signOut();
+  }
 }

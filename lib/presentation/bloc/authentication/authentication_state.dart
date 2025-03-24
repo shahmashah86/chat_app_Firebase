@@ -6,7 +6,7 @@ final class AuthenticationInitial extends AuthenticationState {}
 
 final class AuthenticationLoading extends AuthenticationState {}
 final class AuthenticationAuthenticated extends AuthenticationState {
-  final  UserCredential userCredential;
+  final  UserCredential? userCredential;
 
   AuthenticationAuthenticated({required this.userCredential});
 }

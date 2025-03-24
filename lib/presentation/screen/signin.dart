@@ -29,23 +29,23 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   void initState() {
-  //   FirebaseAuth.instance
-  // .authStateChanges()
-  // .listen((User? user) {
-  //   if (user == null) {
-  //     log('User is currently signed out!');
-  //   return;
-  //   } else {
-  //     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-  //       return Tabbar();
-  //     }), (route) => false);
-  //     // Navigator.push( context, MaterialPageRoute(builder: (context){
-  //     //   return Tabbar();
-  //     // }));
-  //     log('User is signed in! $user');
-  //   }
-  // });
-  //   super.initState();
+    FirebaseAuth.instance
+  .authStateChanges()
+  .listen((User? user) {
+    if (user == null) {
+      log('User is currently signed out!');
+    return;
+    } else {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return Tabbar();
+      }), (route) => false);
+      // Navigator.push( context, MaterialPageRoute(builder: (context){
+      //   return Tabbar();
+      // }));
+      log('User is signed in! $user');
+    }
+  });
+    super.initState();
   }
    @override
   Widget build(BuildContext context) {
@@ -264,7 +264,7 @@ class _LoginState extends State<Login> {
            BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is AuthenticationAuthenticated) {
-          if (state.userCredential.additionalUserInfo?.isNewUser == true) {
+          if (state.userCredential?.additionalUserInfo?.isNewUser == true) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => ProfileSetupScreen()),
@@ -314,12 +314,12 @@ class _LoginState extends State<Login> {
               borderRadius: BorderRadius.circular(8),
             ),
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Tabbar()),
-              (route) => false,
-            );
-              // context.read<AuthenticationBloc>().add(AuthenticationByGoogle());
+            //   Navigator.pushAndRemoveUntil(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => Tabbar()),
+            //   (route) => false,
+            // );
+              context.read<AuthenticationBloc>().add(AuthenticationByGoogle());
             },
           ),
         );
