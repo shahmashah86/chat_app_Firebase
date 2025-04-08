@@ -12,7 +12,7 @@ class ChatScreen extends StatefulWidget {
 
   @override
 
-  _ChatScreenState createState() => _ChatScreenState();
+_ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
       "name": "Charlie",
       "message": "How was your trip?",
       "unread": 3,
-      "ispinned": true,
+      "ispinned": false,
       "timestamp": DateTime.parse("2024-03-26 08:30:00")
     },
     {
@@ -45,6 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
       "ispinned": false,
       "timestamp": DateTime.parse("2024-03-26 21:30:00")
     },
+
     {
       "name": "Emma",
       "message": "Sent you the notes.",
@@ -84,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
       "name": "Noah",
       "message": "Let's plan for the weekend.",
       "unread": 0,
-      "ispinned": false,
+      "ispinned": true,
       "timestamp": DateTime.parse("2024-03-26 18:30:00")
     },
     {
@@ -94,12 +95,33 @@ class _ChatScreenState extends State<ChatScreen> {
       "ispinned": false,
       "timestamp": DateTime.parse("2024-03-26 18:30:00")
     },
+
   ]);
 
-  void sortChatsByTime() {
-    chats.value.sort((a, b) => b["timestamp"].compareTo(a["timestamp"]));
-    chats.notifyListeners(); // Notify the UI to refresh
-  }
+
+  // void sortChatsByTime() {
+  //   chats.value.sort((a, b) => b["timestamp"].compareTo(a["timestamp"]));
+  //   chats.notifyListeners(); // Notify the UI to refresh
+  // }
+
+void sortChatsByTime() {
+  // Separate pinned and unpinned chats
+  List<Map<String, dynamic>> pinnedChats = chats.value.where((chat) => chat["ispinned"] == true).toList();
+  List<Map<String, dynamic>> unpinnedChats = chats.value.where((chat) => chat["ispinned"] == false).toList();
+
+  // Sort pinned chats by timestamp (latest first)
+  // pinnedChats.sort((a, b) => b["timestamp"].compareTo(a["timestamp"]));
+
+  // Sort unpinned chats by timestamp (latest first)
+  unpinnedChats.sort((a, b) => b["timestamp"].compareTo(a["timestamp"]));
+
+  // Combine pinned chats on top followed by unpinned chats
+  chats.value = [...pinnedChats, ...unpinnedChats];
+
+  // Notify listeners to update the UI
+  chats.notifyListeners();
+}
+
 
   List<Map<String, dynamic>> archived = [];
 
@@ -119,28 +141,34 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void pinChats() {
-    final List<Map<String, dynamic>> pinnedChats = [];
-    final List<Map<String, dynamic>> unpinnedChats = [];
+    // final List<Map<String, dynamic>> pinnedChats = [];
+    // final List<Map<String, dynamic>> unpinnedChats = [];
 
     for (int i = 0; i < chats.value.length; i++) {
       if (selectedChats.value.contains(i)) {
         if (chats.value[i]["ispinned"] == true) {
           selectedChats.value.remove(i);
           chats.value[i]["ispinned"] = false;
-          unpinnedChats.add(chats.value[i]);
+          // unpinnedChats.add(chats.value[i]);
+        
         }
         // chats.value[i]["i"]
         else {
           chats.value[i]["ispinned"] = true;
-          pinnedChats.add(chats.value[i]);
-          log(pinnedChats[0]["ispinned"].toString(), name: "ispinned");
+          // pinnedChats.add(chats.value[i]);
+          // log(pinnedChats[0]["ispinned"].toString(), name: "ispinned");
+  
         } // Move selected chats to top
-      } else {
-        unpinnedChats.add(chats.value[i]);
       }
+      //  else {
+      //   // unpinnedChats.add(chats.value[i]);
+      
+      // }
+                sortChatsByTime();
+    
     }
 
-    chats.value = [...pinnedChats, ...unpinnedChats]; // Update chat list
+    // chats.value = [...pinnedChats, ...unpinnedChats]; // Update chat list
     // chats.notifyListeners();
     selectedChats.value = {}; // Clear selection
   }
@@ -216,7 +244,7 @@ class _ChatScreenState extends State<ChatScreen> {
           context,
           MaterialPageRoute(
               builder: (context) => ArchivedChatScreen(
-                  archived: archived, onFunctionCall: _undoArchive)),
+                  archived: archived, onFunctionCall: _undoArchive,sortChatsByTime: sortChatsByTime)),
         ).then((_) {
           if (archived.isEmpty) showArchivedTile.value = false;
         });
@@ -379,6 +407,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     archived.add(archivedChat);
     chats.value.removeAt(index);
+
     showArchivedTile.value = true;
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -398,6 +427,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _undoArchive(Map<String, dynamic> chat) {
     // setState(() {
     chats.value.add(chat);
+
     archived.remove(chat);
     if (archived.isEmpty) {
       showArchivedTile.value = false;
@@ -410,9 +440,10 @@ class ArchivedChatScreen extends StatelessWidget {
   final List<Map<String, dynamic>> archived;
 
   final Function(Map<String, dynamic> chat) onFunctionCall;
+  final Function() sortChatsByTime;
 
   const ArchivedChatScreen(
-      {super.key, required this.archived, required this.onFunctionCall});
+      {super.key, required this.archived, required this.onFunctionCall, required this.sortChatsByTime});
 
   @override
   Widget build(BuildContext context) {
@@ -499,14 +530,17 @@ class ArchivedChatScreen extends StatelessWidget {
   }
 
   void _unarchiveChat(BuildContext context, int index) {
-    final unarchivedChat = archived[index];
+    archived[index]["ispinned"] = false;
+        final unarchivedChat = archived[index];
+        sortChatsByTime();
 
     archived.removeAt(index);
-
+     
     onFunctionCall(unarchivedChat);
     Navigator.pop(
       context,
     );
+       sortChatsByTime();
 
     // Return chat to main screen
 
